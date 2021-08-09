@@ -23,6 +23,9 @@ public class LocationDAO { //DataAccessObject 데이터객체에 접근하는 �
 	
 	public void getOne(int location_id) {
 		
+		
+		//ADD-DTO Branch
+		
 		Connection con = null;
 		PreparedStatement st = null;
 		ResultSet rs = null;
