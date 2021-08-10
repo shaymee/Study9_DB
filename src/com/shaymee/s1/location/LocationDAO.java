@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.shaymee.s1.util.DBConnect;
@@ -20,15 +21,105 @@ public class LocationDAO { //DataAccessObject 데이터객체에 접근하는 �
 
 	}
 	
+	//getCount()
+	//location의 주소 갯수를 리턴 및 출력(23개면 됨)
 	
-	public void getOne(int location_id) {
+	public int getCount() {
 		
+		Connection con = null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		int num = 0;
+		
+		try {
+			
+		con = dbConnect.getConnect();
+		String sql = "SELECT COUNT(LOCATION_ID) as 주소갯수 FROM LOCATIONS";
+		st = con.prepareStatement(sql);
+		rs = st.executeQuery();
+		
+		
+		if(rs.next()) {
+			
+			num = rs.getInt("주소갯수");
+						
+		}
+	
+		} catch(Exception e) {
+			
+			e.printStackTrace();
+		
+		} finally {
+			
+			dbConnect.disConnect(con, st, rs);
+			
+		}
+		
+		
+		return num;
+
+	}
+	
+
+	//getSearch()
+	//STREET_ADDRESS의 일부를 받아서 검색, 찾은것들을 출력
+	
+	public ArrayList<LocationDTO> getSearch(String name) {
+		
+		System.out.println("getSearch메소드 작동");
+		Connection con = null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		LocationDTO locationDTO = null;
+		ArrayList<LocationDTO> ar = new ArrayList<>();
+		
+		try {
+			
+			con = dbConnect.getConnect();
+			String sql = "SELECT * FROM LOCATIONS WHERE STREET_ADDRESS LIKE ?";
+			st = con.prepareStatement(sql);
+			
+			st.setString(1, "%"+name+"%");
+	
+			rs = st.executeQuery();			
+			
+			while(rs.next()) {
+				
+				locationDTO = new LocationDTO();
+				locationDTO.setLocation_id(rs.getInt("LOCATION_ID"));
+				locationDTO.setStreet_address(rs.getString("STREET_ADDRESS"));
+				locationDTO.setPostal_code(rs.getString("POSTAL_CODE"));
+				locationDTO.setCity(rs.getString("CITY"));
+				locationDTO.setState_province(rs.getString("STATE_PROVINCE"));
+				locationDTO.setCountry_id(rs.getString("COUNTRY_ID"));
+				
+				ar.add(locationDTO);
+
+			}
+			
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			dbConnect.disConnect(con, st, rs);			
+		}
+		
+		return ar;
+		
+	}
+	
+	
+	
+	
+	public LocationDTO getOne(int location_id) {		
 		
 		//ADD-DTO Branch
 		
 		Connection con = null;
 		PreparedStatement st = null;
 		ResultSet rs = null;
+		LocationDTO locationDTO = null;
 		
 		try {
 			con = dbConnect.getConnect();
@@ -43,9 +134,18 @@ public class LocationDAO { //DataAccessObject 데이터객체에 접근하는 �
 			
 			rs = st.executeQuery();
 			
-			if(rs.next()) {
-				System.out.println(rs.getString("CITY")); // Oracle에서 실제 출력되서 보이는 그대로의 이름이어야 함 Ex) DEPARTMENT_ID as DI 면 rs.getString("DI")로 입력해야됨
-														  // Java는 ResultSet에서 Data를 가져오는 것. 
+			if(rs.next()) {//한줄을 읽었을때 데이터가 있을때 true
+				locationDTO = new LocationDTO();
+				locationDTO.setLocation_id(rs.getInt("LOCATION_ID"));
+				locationDTO.setStreet_address(rs.getString("STREET_ADDRESS"));
+				locationDTO.setPostal_code(rs.getString("POSTAL_CODE"));
+				locationDTO.setCity(rs.getString("CITY"));
+				locationDTO.setState_province(rs.getString("STATE_PROVINCE"));
+				locationDTO.setCountry_id(rs.getString("COUNTRY_ID"));
+				
+				// Oracle에서 실제 출력되서 보이는 그대로의 이름이어야 함 Ex) DEPARTMENT_ID as DI 면 rs.getString("DI")로 입력해야됨
+				// Java는 ResultSet에서 Data를 가져오는 것. 
+			
 			} else {
 				System.out.println("그런 CITY 없음");
 			}
@@ -66,81 +166,80 @@ public class LocationDAO { //DataAccessObject 데이터객체에 접근하는 �
 			
 		}
 
+		return locationDTO;
 	}
 	
-	public void getCount() {
+//	public void getCount() {
+//		
+//		Connection con = null;
+//		PreparedStatement st = null;
+//		ResultSet rs = null;
+//		
+//		try {
+//
+//			con = dbConnect.getConnect();
+//			
+//			String sql = "SELECT COUNT(DEPARTMENT_ID) as 부서숫자 FROM DEPARTMENTS";
+//			
+//			st = con.prepareStatement(sql);
+//			rs = st.executeQuery();
+//			
+//			if(rs.next()) { // rs.next() --> 한줄은 무조건 읽어야함
+//				System.out.println(rs.getString("부서숫자"));
+//			}
+//			
+//		
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			
+//		} finally {
+//			
+//			try {
+//				rs.close();
+//				st.close();
+//				con.close();
+//			} catch (SQLException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			
+//		}
 		
+//	}
+	
+	
+	
+	public ArrayList<LocationDTO> getList() {
+	
 		Connection con = null;
 		PreparedStatement st = null;
 		ResultSet rs = null;
-		
-		try {
-
-			con = dbConnect.getConnect();
-			
-			String sql = "SELECT COUNT(DEPARTMENT_ID) as 부서숫자 FROM DEPARTMENTS";
-			
-			st = con.prepareStatement(sql);
-			rs = st.executeQuery();
-			
-			if(rs.next()) { // rs.next() --> 한줄은 무조건 읽어야함
-				System.out.println(rs.getString("부서숫자"));
-			}
-			
-		
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			
-		} finally {
-			
-			try {
-				rs.close();
-				st.close();
-				con.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		}
-		
-	}
-	
-	
-	
-	public void getList() {
-	
-		Connection con = null;
-		PreparedStatement st = null;
-		ResultSet rs = null;
-		
+		LocationDTO locationDTO;
+		ArrayList<LocationDTO> ar = new ArrayList<>();
 		
 		try {
 			
 			con = dbConnect.getConnect();
 			
-			//4) SQL문 생성
 			String sql = "SELECT * FROM LOCATIONS";
 			
-			//5) 미리 전송
 			st = con.prepareStatement(sql);
 			
-			//6) 최종 전송 후 결과 처리
 			rs = st.executeQuery();
 			
-			System.out.println("LOCATION_ID"+"\t"+"STREET_ADDRESS"+"\t"+"POSTAL_CODE"+"\t"+"CITY"+"\t"+"STATE_PROVINCE"+"/t"+"COUNTRY_ID");
-			System.out.println("----------------------------------------------------------------------------");
+			
 			while(rs.next()) { // rs.next() --> 한줄 읽고 다음 줄로 내려감. 내려가서 한줄이 또 있으면 true. 어쨌든 ResultSet에 있는걸 읽는 메서드임
+				locationDTO = new LocationDTO();
+				locationDTO.setLocation_id(rs.getInt("LOCATION_ID"));
+				locationDTO.setStreet_address(rs.getString("STREET_ADDRESS"));
+				locationDTO.setPostal_code(rs.getString("POSTAL_CODE"));
+				locationDTO.setCity(rs.getString("CITY"));
+				locationDTO.setState_province(rs.getString("STATE_PROVINCE"));
+				locationDTO.setCountry_id(rs.getString("COUNTRY_ID"));
 				
-				//어떤 컬럼을 먼저 꺼내오든 순서는 상관X. 오타없이 정확히만 입력하면 됨.
-				System.out.print(rs.getInt("LOCATION_ID")+"\t");
-				System.out.print(rs.getString("STREET_ADDRESS")+"\t");
-				System.out.print(rs.getString(3)+"\t"); // 인덱스번호 3번 -> "POSTAL_CODE"
-				System.out.print(rs.getString("CITY")+"\t");
-				System.out.print(rs.getString(5)+"\t"); // 인덱스번호 5번 -> "STATE_PROVINCE"
-				System.out.println(rs.getString("COUNTRY_ID"));
-				System.out.println("-------------------------------------------------------------------------------");
+				ar.add(locationDTO);
+				
 			}
 			
 		} catch (Exception e) {
@@ -160,6 +259,8 @@ public class LocationDAO { //DataAccessObject 데이터객체에 접근하는 �
 			}
 
 		}
+		
+		return ar;
 	}
 	
 	

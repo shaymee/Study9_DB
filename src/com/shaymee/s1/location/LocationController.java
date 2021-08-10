@@ -1,5 +1,7 @@
 package com.shaymee.s1.location;
 
+import java.util.ArrayList;
+
 public class LocationController {
 	
 	private LocationDAO locationDAO;
@@ -14,9 +16,18 @@ public class LocationController {
 		
 //		locationDAO.getList();
 //		locationView.view();
-// 		locationDAO.getOne();
 		
+// 		LocationDTO locationDTO = locationDAO.getOne(1000);
+//		locationView.view(locationDTO);
 		
+//		ArrayList<LocationDTO> ar = locationDAO.getList();
+//		locationView.view(ar);		
+		
+//		ArrayList<LocationDTO> ar = locationDAO.getSearch("Vi");
+//		locationView.view(ar);
+		
+		int num = locationDAO.getCount();
+		locationView.view(num);
 		
 	}
 	

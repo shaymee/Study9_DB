@@ -253,11 +253,11 @@ public class EmployeeDAO {
 			rs = st.executeQuery();
 			
 			while(rs.next()) {
-				double part = 0;
-
-				part = rs.getInt("AVG(SALARY)");
+				double part = 0;				
+				part = rs.getDouble("AVG(SALARY)");
 
 				ar.add(part);
+
 			}
 		
 			
