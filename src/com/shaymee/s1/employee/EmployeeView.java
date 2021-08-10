@@ -42,8 +42,7 @@ public class EmployeeView {
 		for(int i=0;i<ar.size();i++) {
 
 		System.out.println(ar.get(i));
-		
-		
+
 		}
 	}
 	

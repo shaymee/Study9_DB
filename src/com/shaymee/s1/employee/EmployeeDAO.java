@@ -17,15 +17,13 @@ public class EmployeeDAO {
 		dbConnect = new DBConnect();
 	}
 	
-	
 	public ArrayList<EmployeeDTO> getList() { // 1.전체사원 출력
 		
 		Connection con = null;
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		EmployeeDTO employeeDTO = null;
-		ArrayList<EmployeeDTO> ar = new ArrayList<>();
-			
+		ArrayList<EmployeeDTO> ar = new ArrayList<>();			
 	
 		try {
 			
@@ -42,17 +40,17 @@ public class EmployeeDAO {
 				employeeDTO.setEmail(rs.getString("EMAIL"));
 				employeeDTO.setFirst_name(rs.getString("FIRST_NAME"));
 				employeeDTO.setLast_name(rs.getString("LAST_NAME"));
-				employeeDTO.setHire_date(rs.getString("HIRE_DATE"));
+				employeeDTO.setHire_date(rs.getDate("HIRE_DATE"));
 				employeeDTO.setJob_id(rs.getString("JOB_ID"));
+				employeeDTO.setSalary(rs.getDouble("SALARY"));		
+				employeeDTO.setCommission_pct(rs.getDouble("COMMISSION_PCT"));
 				employeeDTO.setManager_id(rs.getInt("MANAGER_ID"));
 				employeeDTO.setPhone_number(rs.getString("PHONE_NUMBER"));
 				
 				ar.add(employeeDTO);
 
 			}
-			
-			
-			
+		
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -91,8 +89,10 @@ public class EmployeeDAO {
 				employeeDTO.setEmail(rs.getString("EMAIL"));
 				employeeDTO.setFirst_name(rs.getString("FIRST_NAME"));
 				employeeDTO.setLast_name(rs.getString("LAST_NAME"));
-				employeeDTO.setHire_date(rs.getString("HIRE_DATE"));
+				employeeDTO.setHire_date(rs.getDate("HIRE_DATE"));
 				employeeDTO.setJob_id(rs.getString("JOB_ID"));
+				employeeDTO.setSalary(rs.getDouble("SALARY"));		
+				employeeDTO.setCommission_pct(rs.getDouble("COMMISSION_PCT"));
 				employeeDTO.setManager_id(rs.getInt("MANAGER_ID"));
 				employeeDTO.setPhone_number(rs.getString("PHONE_NUMBER"));
 			
@@ -112,12 +112,10 @@ public class EmployeeDAO {
 		
 		
 		return employeeDTO;
-		
-		
+	
 	} // getOne() 메소드 끝
 	
-	
-	
+
 	public ArrayList<EmployeeDTO> lastSelect(String last_name) { // 3. Last_Name으로 사원 검색,출력
 		
 		Connection con = null;
@@ -142,8 +140,10 @@ public class EmployeeDAO {
 				employeeDTO.setEmail(rs.getString("EMAIL"));
 				employeeDTO.setFirst_name(rs.getString("FIRST_NAME"));
 				employeeDTO.setLast_name(rs.getString("LAST_NAME"));
-				employeeDTO.setHire_date(rs.getString("HIRE_DATE"));
+				employeeDTO.setHire_date(rs.getDate("HIRE_DATE"));
 				employeeDTO.setJob_id(rs.getString("JOB_ID"));
+				employeeDTO.setCommission_pct(rs.getDouble("COMMISSION_PCT"));
+				employeeDTO.setSalary(rs.getDouble("SALARY"));				
 				employeeDTO.setManager_id(rs.getInt("MANAGER_ID"));
 				employeeDTO.setPhone_number(rs.getString("PHONE_NUMBER"));
 				
@@ -189,8 +189,10 @@ public class EmployeeDAO {
 				employeeDTO.setEmail(rs.getString("EMAIL"));
 				employeeDTO.setFirst_name(rs.getString("FIRST_NAME"));
 				employeeDTO.setLast_name(rs.getString("LAST_NAME"));
-				employeeDTO.setHire_date(rs.getString("HIRE_DATE"));
+				employeeDTO.setHire_date(rs.getDate("HIRE_DATE"));
 				employeeDTO.setJob_id(rs.getString("JOB_ID"));
+				employeeDTO.setSalary(rs.getDouble("SALARY"));				
+				employeeDTO.setCommission_pct(rs.getDouble("COMMISSION_PCT"));
 				employeeDTO.setManager_id(rs.getInt("MANAGER_ID"));
 				employeeDTO.setPhone_number(rs.getString("PHONE_NUMBER"));
 				
@@ -259,9 +261,7 @@ public class EmployeeDAO {
 				ar.add(part);
 
 			}
-		
-			
-			
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -272,8 +272,5 @@ public class EmployeeDAO {
 		return ar;
 		
 	}
-	
-	
-	
-	
+
 }

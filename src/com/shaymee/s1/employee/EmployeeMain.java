@@ -6,7 +6,6 @@ public class EmployeeMain {
 		
 		EmployeeController controller = new EmployeeController();
 		controller.start();
-		
 
 	}
 

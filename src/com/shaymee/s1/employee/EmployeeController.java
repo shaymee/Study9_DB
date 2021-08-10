@@ -73,8 +73,7 @@ public class EmployeeController {
 				employeeView.viewPart(ar);				
 				
 			} else {
-				
-				
+	
 				System.out.println("== 프로그램을 종료합니다 ==");
 				break;
 				
