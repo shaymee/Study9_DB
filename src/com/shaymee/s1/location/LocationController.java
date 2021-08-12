@@ -25,7 +25,9 @@ public class LocationController {
 		while(flag) {
 			System.out.println("1. 전체정보 출력");
 			System.out.println("2. 검색정보 출력");
-			System.out.println("3. 프로그램 종료");
+			System.out.println("3. 지역정보 추가");
+			System.out.println("4. 지역정보 삭제"); // 조건: 삭제시 오류발생. 그러니까 내가 추가한 지역정보만으로 테스트하세요
+			System.out.println("5. 프로그램 종료");
 			
 			System.out.println("== 골라보세요 ==");
 			int select = sc.nextInt();
@@ -46,10 +48,30 @@ public class LocationController {
 				} else {
 					locationView.view("== 존재하지 않는 LOCATION_ID ==");
 				}
-			} else {	
+			} else if(select == 3) {	
+				LocationDTO locationDTO = locationInput.inputLocationDTO(sc);
+				int result = locationDAO2.setInsert(locationDTO);
+				
+				if(result > 0) {
+					locationView.view("== 행 추가 성공 ==");
+				} else {
+					locationView.view("== 행 추가 실패 ==");					
+				}
+				
+			} else if(select == 4) {
+				LocationDTO locationDTO = locationInput.deleteLocationDTO(sc);
+				int result = locationDAO2.setDelete(locationDTO);
+				System.out.println("바보");
+				if(result > 0) {
+					locationView.view("== 삭제 성공 ==");					
+				} else {
+					locationView.view("== 삭제 실패 ==");
+				}
+				
+				
+			} else {
 				System.out.println("=== 프로그램 종료 ===");
 				break;
-				
 			}
 
 			

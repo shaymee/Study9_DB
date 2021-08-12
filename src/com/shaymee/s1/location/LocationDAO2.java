@@ -3,6 +3,7 @@ package com.shaymee.s1.location;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.shaymee.s1.util.DBConnect;
@@ -14,6 +15,80 @@ public class LocationDAO2 {
 	public LocationDAO2() {		
 		dbConnect = new DBConnect();
 	}
+	
+	
+	public int setDelete(LocationDTO locationDTO) {
+		Connection con = null;
+		PreparedStatement st = null;
+		int result = 0;		
+		
+		try {
+			con = dbConnect.getConnect();
+			String sql = "DELETE LOCATIONS WHERE LOCATION_ID = ?";
+			
+			st = con.prepareStatement(sql);
+			st.setInt(1, locationDTO.getLocation_id());
+			System.out.println(locationDTO.getLocation_id());
+			
+			result = st.executeUpdate();
+			System.out.println(result);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				st.close();
+				con.close();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
+		return result;
+		
+	}
+	
+	public int setInsert(LocationDTO locationDTO) {
+		Connection con = null;
+		PreparedStatement st = null;
+		int result = 0;
+				
+		try {
+			con = dbConnect.getConnect();
+			String sql = "INSERT INTO LOCATIONS "
+					+ " values (?, ?, ?, ?, ?, ?)";
+			st = con.prepareStatement(sql);
+			
+			st.setInt(1, locationDTO.getLocation_id());
+			st.setString(2, locationDTO.getStreet_address());
+			st.setString(3, locationDTO.getPostal_code());
+			st.setString(4, locationDTO.getCity());
+			st.setString(5, locationDTO.getState_province());
+			st.setString(6, locationDTO.getCountry_id());
+			
+			result = st.executeUpdate();
+
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				st.close();
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
+		return result;
+	}
+	
+	
 	
 	public ArrayList<LocationDTO> getList() {
 		Connection con = null;
