@@ -44,6 +44,7 @@ public class LocationDAO2 {
 				e.printStackTrace();
 			}
 			
+			
 		}
 		
 		return result;

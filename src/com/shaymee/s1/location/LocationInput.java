@@ -53,7 +53,6 @@ public class LocationInput {
 		
 		return locationDTO;
 		
-		
 	}
 	
 }

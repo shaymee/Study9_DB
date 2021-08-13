@@ -21,6 +21,20 @@ public class Study9Main {
 		LocationController controller = new LocationController();
 		controller.start();
 		System.out.println("=== fin. ===");
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 //		LocationView locationView = new LocationView();
 		

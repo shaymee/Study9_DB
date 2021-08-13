@@ -21,6 +21,7 @@ public class LocationView {
 	}
 	
 	
+	
 	public void view(ArrayList<LocationDTO> ar) {
 		
 		for(int i=0;i<ar.size();i++) {		
